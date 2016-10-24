@@ -5,7 +5,7 @@ class UnbeatableAI
 		@marker = marker
 	end
 
-	def get_move(board)
+	def get_move(ttt_board)
 		your_marker = marker
 		
 		if your_marker == "X"
@@ -14,26 +14,26 @@ class UnbeatableAI
 			opponent_marker = "X"
 		end
 
-		if check_for_win(board, your_marker) <= 8
-			move = check_for_win(board, your_marker)
-		elsif check_for_block(board, opponent_marker) <= 8
-			move = check_for_block(board, opponent_marker)
+		if check_for_win(ttt_board, your_marker) <= 8
+			move = check_for_win(ttt_board, your_marker)
+		elsif check_for_block(ttt_board, opponent_marker) <= 8
+			move = check_for_block(ttt_board, opponent_marker)
 		else
-			move = board.index(" ")
+			move = ttt_board.index(" ")
 		end
 		move
 	end
 
-	def win_or_block(board, current_marker)
+	def win_or_block(ttt_board, current_marker)
 		winning_or_block_combinations = [
-							[board[0],board[1],board[2]],
-							[board[3],board[4],board[5]],
-							[board[6],board[7],board[8]],
-							[board[0],board[3],board[6]],
-							[board[1],board[4],board[7]],
-							[board[2],board[5],board[8]], 
-							[board[0],board[4],board[8]],
-							[board[2],board[4],board[6]]
+							[ttt_board[0],ttt_board[1],ttt_board[2]],
+							[ttt_board[3],ttt_board[4],ttt_board[5]],
+							[ttt_board[6], ttt_board[7], ttt_board[8]],
+							[ttt_board[0], ttt_board[3], ttt_board[6]],
+							[ttt_board[1],ttt_board[4], ttt_board[7]],
+							[ttt_board[2],ttt_board[5],ttt_board[8]], 
+							[ttt_board[0], ttt_board[4], ttt_board[8]],
+							[ttt_board[2],ttt_board[4],ttt_board[6]]
 							]
 
 		win_or_block_positions = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
@@ -50,24 +50,24 @@ class UnbeatableAI
 		pick
 	end
 
-	def check_for_win(board, your_marker)
-		win_or_block(board, your_marker)
+	def check_for_win(ttt_board, your_marker)
+		win_or_block(ttt_board, your_marker)
 	end
 
-	def check_for_block(board, opponent_marker)
-		win_or_block(board, opponent_marker)
+	def check_for_block(ttt_board, opponent_marker)
+		win_or_block(ttt_board, opponent_marker)
 	end
 
-	def check_for_fork(board)
+	def check_for_fork(ttt_board)
 		fork_combinations = [
-							[board[0],board[1],board[2]],
-							[board[3],board[4],board[5]],
-							[board[6],board[7],board[8]],
-							[board[0],board[3],board[6]],
-							[board[1],board[4],board[7]],
-							[board[2],board[5],board[8]], 
-							[board[0],board[4],board[8]],
-							[board[2],board[4],board[6]]
+							[ttt_board[0],ttt_board[1],ttt_board[2]],
+							[ttt_board[3],ttt_board[4],ttt_board[5]],
+							[ttt_board[6], ttt_board[7], ttt_board[8]],
+							[ttt_board[0], ttt_board[3], ttt_board[6]],
+							[ttt_board[1],ttt_board[4], ttt_board[7]],
+							[ttt_board[2],ttt_board[5],ttt_board[8]], 
+							[ttt_board[0], ttt_board[4], ttt_board[8]],
+							[ttt_board[2],ttt_board[4],ttt_board[6]]
 							]
 
 		fork_positions = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]

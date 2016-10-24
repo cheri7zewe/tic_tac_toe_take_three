@@ -1,40 +1,56 @@
 class Board
-
-	attr_accessor :board
-
-	def initialize()
-		@board = [" "," "," "," "," "," "," "," "," "]
-	end
-
-	def update_board(index, marker)
-		board[index] = marker
-	end
-
-	def valid_spot?(index)
-		index >= 0 && index <= 8 && board[index] == " "
-	end
-
-	def check_for_tie?
-		board.count(" ") == 0
-	end
-
-	def check_for_win?(marker)
-		result = false
-		winning_combinations = [[board[0], board[1], board[2]],
-								[board[3], board[4], board[5]],
-								[board[6], board[7], board[8]],
-								[board[0], board[3], board[6]],
-								[board[1], board[4], board[7]],
-								[board[2], board[5], board[8]], 
-								[board[0], board[4], board[8]],
-								[board[2], board[4], board[6]]]
-		winning_combinations.each do |winner|
-			if winner.count(marker) == 3
-				result = true
-			end
-		end
-		result
-		
-	end
-
+ 
+  attr_accessor :ttt_board
+  	
+  	def initialize()
+ -		@ttt_board = [" "," "," "," "," "," "," "," "," "]
+ +		@ttt_board = [" ", " ", " ", " ", " ", " ", " ", " ", " "]
+  	end
+  
+  	def board_positions()
+ 		new_board = []
+ 		ttt_board.each_with_index do |value, index|
+ 			if value == "X" || value == "O"
+ 				new_board.push(value)
+ 			else
+ 				new_board.push(index + 1)
+ 			end
+ 		end
+ 		new_board
+ 	end
+ 
+ 	def update_board(position, marker)
+ 		ttt_board[position] = marker
+ 	end
+ 
+ 	def valid_space?(position)
+ 		# ttt_board[position] == " " && position >= 0 && position <= 8
+ 		position = (position - 1)
+ 		position >= 0 && position <= 8 && ttt_board[position] == " "
+ 	end
+ 
+ 	def game_ends_in_tie?
+ 		ttt_board.count(" ") == 0
+ 	end
+ 
+ 	def game_won?(marker)
+ 		 
+ 		result = false
+ 		winning_combo = [[ttt_board[0],ttt_board[1],ttt_board[2]],
+                          [ttt_board[3],ttt_board[4],ttt_board[5]],
+                          [ttt_board[6],ttt_board[7],ttt_board[8]],
+                          [ttt_board[0],ttt_board[3],ttt_board[6]],
+                          [ttt_board[1],ttt_board[4],ttt_board[7]],
+                          [ttt_board[2],ttt_board[5],ttt_board[8]],
+                          [ttt_board[0],ttt_board[4],ttt_board[8]],
+                          [ttt_board[2],ttt_board[4],ttt_board[6]]]
+ 
+         winning_combo.each do |winner|
+         	if winner.count(marker) == 3
+         		result = true
+         	end
+         end
+         result
+ 	end
+ 
 end
