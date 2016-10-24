@@ -1,31 +1,32 @@
-require 'sinatra'
+require 'rubygems'
+require 'aws/s3'
 require 'csv'
+require 'sinatra'
 require_relative 'board.rb'
 require_relative 'human.rb'
 require_relative 'sequential.rb'
 require_relative 'random.rb'
 require_relative 'unbeatable.rb'
-require 'aws/s3' 
 load './local_env.rb' if File.exists?("./local_env.rb")
 
-s3_key = ENV['S3_Key']
-s3_secret = ENV['S3_Secret']
-
-AWS::S3::Base.establish_connection!(
-:access_key_id => s3_key,
-:secret_access_key => s3_secret
-)
-
 def write_file_to_s3(data_to_write)
-	AWS::S3::S3Object.store('summary.csv', 
-    	data_to_write, 
-        'tictactoe-scores5', 
-        :access => :public_read)
+	AWS::S3::Base.establish_connection!(
+  :access_key_id => ENV['S3_KEY'],
+  :secret_access_key => ENV['S3_SECRET']   
+)
+file = "summary.csv" 
+bucket = ENV['S3_BUCKET']
+csv = AWS::S3::S3Object.value(file, bucket)
+csv << "Something"
+AWS::S3::S3Object.store(File.basename(file), 
+                        csv, 
+                        bucket, 
+                        :access => :public_read)
 end
 
 def read_csv_from_s3
 	file = 'summary.csv'
-	bucket = 'tictactoe-scores5'
+	bucket = 'ttt-class-ccac'
 	object_from_s3 = AWS::S3::S3Object.value(file, bucket)
 	csv = CSV.parse(object_from_s3)
 end
@@ -86,7 +87,7 @@ end
 get '/get_move' do
 	move = session[:current_player].get_move(session[:board].ttt_board)
 
-	if move == "NO"
+	if move == "no"
 		erb :get_move, :locals => { :current_player => session[:current_player], :current_player_name => session[:current_player_name], :board => session[:board].board_positions }
 	elsif session[:board].valid_space?(move)
 		redirect '/make_move?move=' + move.to_s 
