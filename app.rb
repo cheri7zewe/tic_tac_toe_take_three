@@ -28,7 +28,15 @@ def read_csv_from_s3
 	file = 'summary.csv'
 	bucket = 'ttt-class-ccac'
 	object_from_s3 = AWS::S3::S3Object.value(file, bucket)
-	csv = CSV.parse(object_from_s3)
+	# csv = CSV.parse(object_from_s3)
+end
+
+def create_result_array(content)
+	file = content
+	result = file.split("\n")
+	array = Array.new
+	result.each { |x| array.push(x.split(":"))}
+	array
 end
 
 # post routes come from the form action
@@ -71,10 +79,10 @@ post '/opponent' do
 
 		redirect '/get_move'
 
-	# else player_2 == "unbeatable_ai"
-	# 	session[:p2] = UnbeatableAI.new("O")
+	else player_2 == "unbeatable_ai"
+		session[:p2] = UnbeatableAI.new("O")
 
-	# 	redirect '/get_move'
+		redirect '/get_move'
 	end
 end
 
