@@ -67,20 +67,21 @@ post '/opponent' do
 
 		erb :opponent_name, :locals => { :board => session[:board].board_positions }
 
-	elsif player_2 == "sequential_ai"
-		session[:p2] = SequentialAI.new("O")
-		session[:name_player_2] = "CPU"
+	# elsif player_2 == "sequential_ai"
+	# 	session[:p2] = SequentialAI.new("O")
+	# 	session[:name_player_2] = "CPU"
 
-		redirect '/get_move'
+	# 	redirect '/get_move'
 
-	elsif player_2 == "random_ai"
-		session[:p2] = RandomAI.new("O")
-		session[:name_player_2] = "CPU"
+	# elsif player_2 == "random_ai"
+	# 	session[:p2] = RandomAI.new("O")
+	# 	session[:name_player_2] = "CPU"
 
-		redirect '/get_move'
+	# 	redirect '/get_move'
 
 	else player_2 == "unbeatable_ai"
 		session[:p2] = UnbeatableAI.new("O")
+		session[:name_player_2] = "CPU"
 
 		redirect '/get_move'
 	end
@@ -105,7 +106,7 @@ get '/get_move' do
 end
 
 post '/get_player_move' do
-	move = params[:move_spot].to_i
+	move = params[:square].to_i
 
 	if session[:board].valid_space?(move)
 		redirect '/make_move?move=' + move.to_s
